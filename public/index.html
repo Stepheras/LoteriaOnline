@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lotería Online</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>🎉 Lotería Online 🎉</h1>
+        <p>Welcome to our multiplayer Lotería game!</p>
+
+        <div id="joinSection">
+            <h2>Join the Game</h2>
+            <input type="text" id="playerName"
+                   placeholder="Enter your name" maxlength="20">
+            <button id="joinButton">Join Game</button>
+        </div>
+
+        <div id="lobbySection" style="display: none;">
+            <h2>Game Lobby</h2>
+            <p>Waiting for the host to start the game...</p>
+
+            <h3>Connected Players: <span id="playerCount">0</span></h3>
+            <ul id="playerList"></ul>
+
+
+		<!-- Host controls -->
+		<div id="hostControls" style="display: none;">
+    		<h2>🎤 Host Controls</h2>
+    		<button id="nextCardButton">Call Next Card</button>
+    		<button id="newGameButton">🔄 New Game</button>
+		</div>
+
+		<!-- Display the card called by the host -->
+		<div id="calledCardSection">
+    		<h2>Current Card</h2>
+    		<div id="currentCard">
+        		Waiting for the first card...
+    		</div>
+		</div>
+
+		<p id="gameMessage"></p>
+
+
+
+			<h2>Your Lotería Board</h2>
+			<p>Each player has a different board!</p>
+
+			<div id="gameBoard"></div>
+			
+			<!-- Button for claiming a winning Loteria -->
+			<button id="loteriaButton">🎉 ¡LOTERÍA!</button>
+
+			<!-- Winner announcement -->
+			<div id="winnerSection" style="display: none;">
+    			<h2>🏆 We Have a Winner!</h2>
+    			<p id="winnerName"></p>
+			</div>
+
+			
+		<!-- Live leaderboard -->
+		<div id="leaderboardSection">
+    		<h2>🏆 Live Leaderboard</h2>
+    		<p>See how many beans each player has placed!</p>
+    		<ol id="leaderboard"></ol>
+		</div>
+
+
+        </div>
+    </div>
+
+    <!-- Socket.IO client library provided by our server -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script.js"></script>
+
+</body>
+</html>

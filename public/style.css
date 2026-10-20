@@ -1,0 +1,214 @@
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #fff4d6;
+    text-align: center;
+    margin: 0;
+    padding: 30px;
+}
+
+.container {
+    background-color: white;
+    max-width: 650px;
+    margin: auto;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+h1 {
+    color: #c0392b;
+}
+
+h2 {
+    color: #2874a6;
+}
+
+input {
+    padding: 12px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+}
+
+button {
+    padding: 12px 20px;
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #1e8449;
+}
+
+#playerList {
+    list-style: none;
+    padding: 0;
+}
+
+#playerList li {
+    background-color: #f2f3f4;
+    margin: 8px;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+/* Loteria game board */
+#gameBoard {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-top: 20px;
+}
+
+/* Individual Loteria cards */
+.loteriaCard {
+    background-color: #fff8e7;
+    border: 2px solid #c0392b;
+    border-radius: 8px;
+    padding: 12px 4px;
+    min-height: 85px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.cardEmoji {
+    font-size: 35px;
+}
+
+.loteriaCard span:last-child {
+    font-size: 12px;
+    font-weight: bold;
+}
+
+@media (max-width: 500px) {
+    .loteriaCard {
+        padding: 8px 2px;
+        min-height: 70px;
+    }
+
+    .cardEmoji {
+        font-size: 26px;
+    }
+}
+
+/* Host controls */
+#hostControls {
+    background-color: #e8f8f5;
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+/* Current called card */
+#calledCardSection {
+    background-color: #fef5e7;
+    border: 2px solid #f39c12;
+    border-radius: 10px;
+    padding: 15px;
+    margin-top: 20px;
+}
+
+#currentCard {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 10px auto;
+    max-width: 180px;
+}
+
+.calledEmoji {
+    font-size: 65px;
+}
+
+#gameMessage {
+    color: #c0392b;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+/* Make Loteria cards clickable */
+.loteriaCard {
+    cursor: pointer;
+    position: relative;
+}
+
+/* Highlight cards with beans */
+.loteriaCard.marked {
+    background-color: #d5f5e3;
+    border: 3px solid #27ae60;
+}
+
+/* Display a virtual bean on marked cards */
+.loteriaCard.marked::after {
+    content: "🫘";
+    position: absolute;
+    top: 3px;
+    right: 5px;
+    font-size: 22px;
+}
+
+/* Leaderboard section */
+#leaderboardSection {
+    background-color: #f4ecf7;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 25px;
+}
+
+#leaderboard {
+    text-align: left;
+    max-width: 350px;
+    margin: 15px auto;
+    padding-left: 30px;
+}
+
+#leaderboard li {
+    background-color: white;
+    padding: 10px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+}
+
+
+/* Loteria winning button */
+#loteriaButton {
+    background-color: #e74c3c;
+    font-size: 22px;
+    font-weight: bold;
+    padding: 15px 30px;
+    margin-top: 20px;
+}
+
+#loteriaButton:hover {
+    background-color: #c0392b;
+}
+
+/* Winner announcement */
+#winnerSection {
+    background-color: #fcf3cf;
+    border: 3px solid #f1c40f;
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+#winnerName {
+    font-size: 24px;
+    font-weight: bold;
+    color: #c0392b;
+}
+
+/* Disabled buttons */
+button:disabled {
+    background-color: #aaa;
+    cursor: not-allowed;
+}
