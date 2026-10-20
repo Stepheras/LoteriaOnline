@@ -1,5 +1,6 @@
-//This will be the code that connects the players
-//to the server 
+
+// This will be the code that connects the players
+// to the server
 
 // Connect to our Socket.IO server
 const socket = io();
@@ -11,6 +12,25 @@ const joinSection = document.getElementById("joinSection");
 const lobbySection = document.getElementById("lobbySection");
 const playerCount = document.getElementById("playerCount");
 const playerList = document.getElementById("playerList");
+
+// Get the host controls and called card elements
+const hostControls = document.getElementById("hostControls");
+const nextCardButton = document.getElementById("nextCardButton");
+const currentCard = document.getElementById("currentCard");
+const gameMessage = document.getElementById("gameMessage");
+
+// Get the winning pattern elements
+const winningPatternSelect = document.getElementById("winningPattern");
+const selectedPattern = document.getElementById("selectedPattern");
+
+// Get the Loteria button and winner elements
+const loteriaButton = document.getElementById("loteriaButton");
+const winnerSection = document.getElementById("winnerSection");
+const winnerName = document.getElementById("winnerName");
+
+// Get the New Game button
+const newGameButton = document.getElementById("newGameButton");
+
 
 // When the player clicks Join Game
 joinButton.addEventListener("click", () => {
@@ -29,8 +49,10 @@ joinButton.addEventListener("click", () => {
     lobbySection.style.display = "block";
 });
 
+
 // Receive the updated player list from the server
 socket.on("updatePlayers", (players) => {
+
     // Update the number of players
     playerCount.textContent = players.length;
 
@@ -45,8 +67,10 @@ socket.on("updatePlayers", (players) => {
     });
 });
 
+
 // Receive the player's unique Loteria board
 socket.on("yourBoard", (board) => {
+
     const gameBoard = document.getElementById("gameBoard");
 
     // Clear any previous board
@@ -54,65 +78,76 @@ socket.on("yourBoard", (board) => {
 
     // Display each card on the board
     board.forEach((card) => {
+
         const cardElement = document.createElement("div");
-
         cardElement.className = "loteriaCard";
-        
-        
-		// Remember which Loteria card this represents
-		cardElement.dataset.cardName = card.name;
 
-		// Send the clicked card to the server
-		cardElement.addEventListener("click", () => {
-    		socket.emit("markCard", card.name);
-		});
+        // Remember which Loteria card this represents
+        cardElement.dataset.cardName = card.name;
 
+        // Send the clicked card to the server
+        cardElement.addEventListener("click", () => {
+            socket.emit("markCard", card.name);
+        });
 
-        const emoji = document.createElement("span");
-        emoji.className = "cardEmoji";
-        emoji.textContent = card.emoji;
+        // Create an image for this Loteria card
+        const cardImage = document.createElement("img");
+        cardImage.src = card.image;
+        cardImage.alt = card.name;
+        cardImage.className = "loteriaImage";
 
-        const name = document.createElement("span");
-        name.textContent = card.name;
+        // Show the emoji if the image cannot load
+        cardImage.onerror = () => {
+            cardImage.replaceWith(
+                document.createTextNode(card.emoji)
+            );
+        };
 
-        cardElement.appendChild(emoji);
-        cardElement.appendChild(name);
+        // Add the image to the card
+        cardElement.appendChild(cardImage);
 
+        // Add the card to the board
         gameBoard.appendChild(cardElement);
     });
 });
 
-
-// Get the host controls and called card elements
-const hostControls = document.getElementById("hostControls");
-const nextCardButton = document.getElementById("nextCardButton");
-const currentCard = document.getElementById("currentCard");
-const gameMessage = document.getElementById("gameMessage");
 
 // Show host controls only to the host
 socket.on("hostStatus", (isHost) => {
     hostControls.style.display = isHost ? "block" : "none";
 });
 
+
 // When the host clicks the Next Card button
 nextCardButton.addEventListener("click", () => {
     socket.emit("nextCard");
 });
 
+
 // Receive the card called by the host
 socket.on("cardCalled", (card) => {
-    currentCard.innerHTML = "";
 
-    const emoji = document.createElement("div");
-    emoji.className = "calledEmoji";
-    emoji.textContent = card.emoji;
+    // Clear the previous called card
+    currentCard.textContent = "";
 
-    const name = document.createElement("h3");
-    name.textContent = card.name;
+    // Lock the winning pattern once the game starts
+    winningPatternSelect.disabled = true;
 
-    currentCard.appendChild(emoji);
-    currentCard.appendChild(name);
+    // Create the called card's illustration
+    const calledImage = document.createElement("img");
+    calledImage.src = card.image;
+    calledImage.alt = card.name;
+    calledImage.className = "calledCardImage";
+
+    // Show the emoji and name if the image cannot load
+    calledImage.onerror = () => {
+        currentCard.textContent = card.emoji + " " + card.name;
+    };
+
+    // Display the illustration
+    currentCard.appendChild(calledImage);
 });
+
 
 // Display messages sent by the server
 socket.on("gameMessage", (message) => {
@@ -129,12 +164,15 @@ socket.on("updateMarked", (markedCards) => {
     boardCards.forEach((card) => {
 
         // Check if this card has a bean
-        const isMarked = markedCards.includes(card.dataset.cardName);
+        const isMarked = markedCards.includes(
+            card.dataset.cardName
+        );
 
         // Add or remove the marked style
         card.classList.toggle("marked", isMarked);
     });
 });
+
 
 // Receive the live leaderboard
 socket.on("updateLeaderboard", (players) => {
@@ -149,6 +187,7 @@ socket.on("updateLeaderboard", (players) => {
 
     // Display the players and their scores
     players.forEach((player) => {
+
         const li = document.createElement("li");
 
         li.textContent = player.name + " - " +
@@ -159,15 +198,11 @@ socket.on("updateLeaderboard", (players) => {
 });
 
 
-// Get the Loteria button and winner elements
-const loteriaButton = document.getElementById("loteriaButton");
-const winnerSection = document.getElementById("winnerSection");
-const winnerName = document.getElementById("winnerName");
-
 // Send a Loteria claim to the server
 loteriaButton.addEventListener("click", () => {
     socket.emit("claimLoteria");
 });
+
 
 // Receive the winner announcement
 socket.on("winnerAnnounced", (winner) => {
@@ -179,28 +214,65 @@ socket.on("winnerAnnounced", (winner) => {
     // Disable the Loteria button
     loteriaButton.disabled = true;
 
-    // Hide the host's Next Card button
+    // Disable the host's Next Card button
     nextCardButton.disabled = true;
+
+    // Keep the winning pattern locked
+    winningPatternSelect.disabled = true;
 });
 
-
-// Get the New Game button
-const newGameButton = document.getElementById("newGameButton");
 
 // Ask the server to start a new game
 newGameButton.addEventListener("click", () => {
     socket.emit("newGame");
 });
 
+
 // Reset the game display for everyone
 socket.on("gameReset", () => {
 
+    // Allow the host to choose a new winning pattern
+    winningPatternSelect.disabled = false;
+
+    // Clear the previously called card
     currentCard.textContent = "Waiting for the first card...";
+
+    // Clear any previous messages
     gameMessage.textContent = "";
 
+    // Hide the previous winner
     winnerSection.style.display = "none";
     winnerName.textContent = "";
 
+    // Enable the game buttons again
     loteriaButton.disabled = false;
     nextCardButton.disabled = false;
+});
+
+
+// When the host selects a winning pattern
+winningPatternSelect.addEventListener("change", () => {
+
+    // Send the selected pattern to the server
+    socket.emit("selectPattern", winningPatternSelect.value);
+});
+
+
+// When the server updates the winning pattern
+socket.on("patternUpdated", (pattern) => {
+
+    // Names to display for each winning pattern
+    const patternNames = {
+        any: "Any Line (First to Complete)",
+        horizontal: "Horizontal Row",
+        vertical: "Vertical Column",
+        diagonal: "Diagonal Line",
+        full: "Full Board"
+    };
+
+    // Display the selected pattern to everyone
+    selectedPattern.textContent = patternNames[pattern];
+
+    // Keep the host's dropdown synchronized
+    winningPatternSelect.value = pattern;
 });

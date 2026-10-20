@@ -19,6 +19,9 @@ let calledCards = [];
 // Keep track of the winner
 let winner = null;
 
+// Keep track of the winning pattern for the current game
+let winningPattern = "any";
+
 // Send everyone's current score to all connected players
 function updateLeaderboard() {
     const leaderboard = players.map(player => ({
@@ -31,32 +34,35 @@ function updateLeaderboard() {
 
 
 // Loteria cards represented by emojis
+
+ // Loteria cards with traditional illustrations
 const cards = [
-    { name: "El Sol", emoji: "☀️" },
-    { name: "La Luna", emoji: "🌙" },
-    { name: "La Estrella", emoji: "⭐" },
-    { name: "El Corazón", emoji: "❤️" },
-    { name: "La Sirena", emoji: "🧜‍♀️" },
-    { name: "El Árbol", emoji: "🌳" },
-    { name: "La Rosa", emoji: "🌹" },
-    { name: "El Gallo", emoji: "🐓" },
-    { name: "La Corona", emoji: "👑" },
-    { name: "El Mundo", emoji: "🌎" },
-    { name: "El Pescado", emoji: "🐟" },
-    { name: "La Campana", emoji: "🔔" },
-    { name: "La Botella", emoji: "🍾" },
-    { name: "El Cantarito", emoji: "🏺" },
-    { name: "El Paraguas", emoji: "☂️" },
-    { name: "La Mano", emoji: "✋" },
-    { name: "La Escalera", emoji: "🪜" },
-    { name: "El Tambor", emoji: "🥁" },
-    { name: "La Bandera", emoji: "🚩" },
-    { name: "El Violín", emoji: "🎻" },
-    { name: "La Bota", emoji: "👢" },
-    { name: "El Cazo", emoji: "🥣" },
-    { name: "La Sandía", emoji: "🍉" },
-    { name: "El Venado", emoji: "🦌" }
+    { name: "El Sol", emoji: "☀️", image: "/images/el-sol.png" },
+    { name: "La Luna", emoji: "🌙", image: "/images/la-luna.png" },
+    { name: "La Estrella", emoji: "⭐", image: "/images/la-estrella.png" },
+    { name: "El Corazón", emoji: "❤️", image: "/images/el-corazon.png" },
+    { name: "La Sirena", emoji: "🧜‍♀️", image: "/images/la-sirena.png" },
+    { name: "El Árbol", emoji: "🌳", image: "/images/el-arbol.png" },
+    { name: "La Rosa", emoji: "🌹", image: "/images/la-rosa.png" },
+    { name: "El Gallo", emoji: "🐓", image: "/images/el-gallo.png" },
+    { name: "La Corona", emoji: "👑", image: "/images/la-corona.png" },
+    { name: "El Mundo", emoji: "🌎", image: "/images/el-mundo.png" },
+    { name: "El Pescado", emoji: "🐟", image: "/images/el-pescado.png" },
+    { name: "La Campana", emoji: "🔔", image: "/images/la-campana.png" },
+    { name: "La Botella", emoji: "🍾", image: "/images/la-botella.png" },
+    { name: "El Cantarito", emoji: "🏺", image: "/images/el-cantarito.png" },
+    { name: "El Paraguas", emoji: "☂️", image: "/images/el-paraguas.png" },
+    { name: "La Mano", emoji: "✋", image: "/images/la-mano.png" },
+    { name: "La Escalera", emoji: "🪜", image: "/images/la-escalera.png" },
+    { name: "El Tambor", emoji: "🥁", image: "/images/el-tambor.png" },
+    { name: "La Bandera", emoji: "🚩", image: "/images/la-bandera.png" },
+    { name: "El Violín", emoji: "🎻", image: "/images/el-violin.png" },
+    { name: "La Bota", emoji: "👢", image: "/images/la-bota.png" },
+    { name: "El Cazo", emoji: "🥣", image: "/images/el-cazo.png" },
+    { name: "La Sandía", emoji: "🍉", image: "/images/la-sandia.png" },
+    { name: "El Venado", emoji: "🦌", image: "/images/el-venado.png" }
 ];
+
 
 // Create a random 4x4 board for a player
 function createBoard() {
@@ -71,29 +77,62 @@ function createBoard() {
 }
 
 
- // Check if a player has completed a winning line
+
+ // Check if a player has completed the selected winning pattern
 function checkWinner(player) {
 
-    // All possible winning lines on a 4x4 board
-    const winningLines = [
-        // Horizontal rows
+    // All horizontal winning lines
+    const horizontalLines = [
         [0, 1, 2, 3],
         [4, 5, 6, 7],
         [8, 9, 10, 11],
-        [12, 13, 14, 15],
+        [12, 13, 14, 15]
+    ];
 
-        // Vertical columns
+    // All vertical winning lines
+    const verticalLines = [
         [0, 4, 8, 12],
         [1, 5, 9, 13],
         [2, 6, 10, 14],
-        [3, 7, 11, 15],
+        [3, 7, 11, 15]
+    ];
 
-        // Diagonals
+    // Both diagonal winning lines
+    const diagonalLines = [
         [0, 5, 10, 15],
         [3, 6, 9, 12]
     ];
 
-    // Check each possible winning line
+    // Choose which lines count based on the selected pattern
+    let winningLines = [];
+
+    if (winningPattern === "horizontal") {
+        winningLines = horizontalLines;
+
+    } else if (winningPattern === "vertical") {
+        winningLines = verticalLines;
+
+    } else if (winningPattern === "diagonal") {
+        winningLines = diagonalLines;
+
+    } else if (winningPattern === "full") {
+
+        // Full board requires all 16 cards to be marked
+        return player.board.every(card =>
+            player.marked.includes(card.name)
+        );
+
+    } else {
+
+        // "any" allows horizontal, vertical, or diagonal
+        winningLines = [
+            ...horizontalLines,
+            ...verticalLines,
+            ...diagonalLines
+        ];
+    }
+
+    // Check each allowed winning line
     for (const line of winningLines) {
 
         // Check whether all 4 cards in the line are marked
@@ -107,9 +146,10 @@ function checkWinner(player) {
         }
     }
 
-    // No winning line was found
+    // No winning pattern was completed
     return false;
 }
+
 
 // Serve our HTML, CSS, and JavaScript files
 app.use(express.static("public"));
@@ -117,6 +157,44 @@ app.use(express.static("public"));
 // Listen for players connecting
 io.on("connection", (socket) => {
     console.log("A user connected:", socket.id);
+	
+	
+    // Tell newly connected players the current winning pattern
+    socket.emit("patternUpdated", winningPattern);
+
+    // When the host chooses a winning pattern
+    socket.on("selectPattern", (pattern) => {
+
+        // Only the host can change the winning pattern
+        if (socket.id !== hostId) {
+            return;
+        }
+
+        // Only allow changes before any cards have been called
+        if (calledCards.length > 0 || winner !== null) {
+            return;
+        }
+
+        // List of valid winning patterns
+        const validPatterns = [
+            "any",
+            "horizontal",
+            "vertical",
+            "diagonal",
+            "full"
+        ];
+
+        // Reject invalid patterns
+        if (!validPatterns.includes(pattern)) {
+            return;
+        }
+
+        // Save the selected pattern
+        winningPattern = pattern;
+
+        // Tell every connected player the selected pattern
+        io.emit("patternUpdated", winningPattern);
+    });
 
 	
     // When the host clicks Next Card
@@ -257,6 +335,9 @@ io.on("connection", (socket) => {
 
 		// Tell this player whether they are the host
 		socket.emit("hostStatus", socket.id === hostId);
+
+		// Send the current winning pattern to this player
+		socket.emit("patternUpdated", winningPattern);
 
 		// Send the player's unique board
 		socket.emit("yourBoard", player.board);

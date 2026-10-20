@@ -212,3 +212,255 @@ button:disabled {
     background-color: #aaa;
     cursor: not-allowed;
 }
+
+/* Winning pattern selection */
+#patternControls {
+    background-color: #fff3cd;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+#winningPattern {
+    padding: 12px;
+    font-size: 16px;
+    border: 2px solid #d4a017;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 350px;
+}
+
+#selectedPatternSection {
+    background-color: #e8f8f5;
+    border: 2px solid #27ae60;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 15px 0;
+}
+
+#selectedPattern {
+    font-size: 20px;
+    font-weight: bold;
+    color: #196f3d;
+}
+
+
+/* Traditional Loteria images on each player's board */
+.loteriaImage {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 5px;
+}
+
+/* Keep each board card neatly sized */
+.loteriaCard {
+    padding: 4px;
+    overflow: hidden;
+}
+
+/* Large illustration for the currently called card */
+.calledCardImage {
+    display: block;
+    width: 180px;
+    max-width: 100%;
+    height: auto;
+    margin: 10px auto;
+    border: 3px solid #d4a017;
+    border-radius: 8px;
+}
+
+/* Make the bean appear clearly over the illustration */
+.loteriaCard.marked {
+    position: relative;
+    border: 3px solid #27ae60;
+    background-color: #d5f5e3;
+}
+
+.loteriaCard.marked::after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 35px;
+}
+
+/* =========================================
+   TRADITIONAL LOTERIA COLORS
+   ========================================= */
+
+body {
+    background-color: #FFF5DF;
+    color: #123B77;
+}
+
+.container {
+    background-color: #FFFCF4;
+    border: 3px solid #E9B949;
+    border-radius: 18px;
+    box-shadow: 0 8px 25px rgba(18, 59, 119, 0.15);
+}
+
+h1, h2, h3 {
+    color: #123B77;
+}
+
+/* All regular buttons */
+button {
+    background-color: #123B77;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 20px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button:hover:not(:disabled) {
+    background-color: #1E5599;
+}
+
+/* Host buttons underneath the called card */
+#hostControls {
+    margin: 15px auto 25px;
+    text-align: center;
+}
+
+#nextCardButton {
+    background-color: #123B77;
+    color: white;
+    margin: 6px;
+}
+
+#newGameButton {
+    background-color: #E9B949;
+    color: #123B77;
+    margin: 6px;
+}
+
+#newGameButton:hover:not(:disabled) {
+    background-color: #D9A32D;
+}
+
+/* Keep the Loteria claim button red */
+#loteriaButton {
+    background-color: #C94C42;
+    color: white;
+}
+
+#loteriaButton:hover:not(:disabled) {
+    background-color: #A93730;
+}
+
+/* Called card display */
+#calledCardSection {
+    background-color: #FFF5DF;
+    border: 3px solid #E9B949;
+    border-radius: 15px;
+    padding: 18px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.calledCardImage {
+    width: 190px;
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 15px auto;
+    border: 3px solid #123B77;
+    border-radius: 8px;
+}
+
+/* Winning pattern display */
+#selectedPatternSection {
+    background-color: #E8F0FA;
+    border: 2px solid #123B77;
+    border-radius: 12px;
+    padding: 12px;
+}
+
+#selectedPattern {
+    color: #123B77;
+}
+
+/* Host's winning pattern dropdown */
+#patternControls {
+    background-color: #FFF5DF;
+    border: 2px solid #E9B949;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 12px;
+}
+
+#winningPattern {
+    border: 2px solid #123B77;
+    background-color: white;
+    color: #123B77;
+}
+
+/* Leaderboard */
+#leaderboardSection {
+    background-color: #E8F0FA;
+    border: 2px solid #123B77;
+    border-radius: 12px;
+    padding: 15px;
+    margin-top: 20px;
+}
+
+/* Disabled buttons */
+button:disabled {
+    background-color: #A5A5A5;
+    color: #EEEEEE;
+    cursor: not-allowed;
+}
+
+/* =========================================
+   LARGE CENTERED BEANS
+   ========================================= */
+
+/* Each card acts as the positioning area */
+.loteriaCard {
+    position: relative;
+    padding: 4px;
+    overflow: hidden;
+    border: 2px solid #123B77;
+    border-radius: 8px;
+    background-color: white;
+    cursor: pointer;
+}
+
+/* Keep the illustrations inside their cards */
+.loteriaImage {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+}
+
+/* Highlight selected cards */
+.loteriaCard.marked {
+    border: 3px solid #E9B949;
+    background-color: #FFF5DF;
+}
+
+/* Make the bean large and centered */
+.loteriaCard.marked::after {
+    content: "🫘";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: clamp(35px, 6vw, 60px);
+    line-height: 1;
+    z-index: 2;
+
+    /* Help the bean stand out from the illustration */
+    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.65));
+    pointer-events: none;
+}
+
+/* Slightly darken the picture under the bean */
+.loteriaCard.marked .loteriaImage {
+    filter: brightness(0.78);
+}

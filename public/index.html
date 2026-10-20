@@ -27,11 +27,11 @@
             <ul id="playerList"></ul>
 
 
-		<!-- Host controls -->
-		<div id="hostControls" style="display: none;">
-    		<h2>🎤 Host Controls</h2>
-    		<button id="nextCardButton">Call Next Card</button>
-    		<button id="newGameButton">🔄 New Game</button>
+
+		<!-- Show the selected winning pattern to all players -->
+		<div id="selectedPatternSection">
+    		<h3>Winning Pattern</h3>
+    		<p id="selectedPattern">Any Line (First to Complete)</p>
 		</div>
 
 		<!-- Display the card called by the host -->
@@ -42,9 +42,29 @@
     		</div>
 		</div>
 
+		<!-- Host controls -->
+		<div id="hostControls" style="display: none;">
+    		<h2>🎤 Host Controls</h2>
+    		
+			<!-- Host chooses the winning pattern -->
+			<div id="patternControls">
+    			<h3>Choose a Winning Pattern</h3>
+
+    			<select id="winningPattern">
+        			<option value="any">Any Line (First to Complete)</option>
+        			<option value="horizontal">Horizontal Row</option>
+        			<option value="vertical">Vertical Column</option>
+        			<option value="diagonal">Diagonal Line</option>
+        			<option value="full">Full Board</option>
+    			</select>
+			</div>
+
+    		<button id="nextCardButton">Call Next Card</button>
+    		<button id="newGameButton">🔄 New Game</button>
+		</div>
+
+
 		<p id="gameMessage"></p>
-
-
 
 			<h2>Your Lotería Board</h2>
 			<p>Each player has a different board!</p>
